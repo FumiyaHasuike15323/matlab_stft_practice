@@ -3,18 +3,18 @@ clear; close all; clc;
 
 % 440Hz＋880Hzの信号（10秒，サンプリング周波数16kHz）を生成
 second = 10;
-sampling_freq = 16000;
-sampling_inter = 1 / sampling_freq;
-sample_count = sampling_freq * second;
+samplingFreq = 16000;
+samplingInter = 1 / samplingFreq;
+sampleCount = samplingFreq * second;
 
-t_vec = linspace(sampling_inter, second, sample_count);
-sample_vec = zeros(sample_count, 1)';
+tVec = linspace(samplingInter, second, sampleCount);
+sampleVec = zeros(sampleCount, 1)';
 
-freq_base = 440;
+freqBase = 440;
 amp = 0.4;
 for i = 1:2
-    omega = 2 * pi * i * freq_base;
-    sample_vec = sample_vec + amp * sin(omega * t_vec);
+    omega = 2 * pi * i * freqBase;
+    sampleVec = sampleVec + amp * sin(omega * tVec);
 end
 
 %チェック
