@@ -7,8 +7,8 @@ samplingFreq = 16000;
 samplingInter = 1 / samplingFreq;
 sampleCount = samplingFreq * second;
 
-tVec = linspace(samplingInter, second, sampleCount);
-sampleVec = zeros(sampleCount, 1)';
+tVec = linspace(samplingInter, second, sampleCount)';
+sampleVec = zeros(sampleCount, 1);
 
 freqBase = 440;
 amp = 0.4;
@@ -17,11 +17,28 @@ for i = 1:2
     sampleVec = sampleVec + amp * sin(omega * tVec);
 end
 
-%チェック
-%audiowrite("test.wav", sample_vec, sampling_freq);
-
-
 % STFT実装
+winLen = 2048;
+shiftLen = winLen / 2;
+winCount = ceil((sampleCount - winLen) / shiftLen) + 1;
+sampleCountZFill = winLen + (winCount - 1) * shiftLen;
+
+winFnVec = 0.5 - 0.5 * cos(linspace(0, 2 * pi, winLen)');
+stftMat = zeros(winLen, winCount);
+
+for i = 1:winCount
+    startIdx = (i - 1) * shiftLen + 1;
+    endIdx = startIdx + winLen - 1;
+
+    if endIdx > sampleCount
+        winSampleVec = cat(1, sampleVec(startIdx:sampleCount), zeros(sampleCountZFill - sampleCount, 1));
+    else
+        winSampleVec = sampleVec(startIdx:endIdx) ;
+    end
+
+    a = winSampleVec .* winFnVec;
+    stftMat(:,i) = fft(winSampleVec .* winFnVec);
+end
 
 % パワースペクトログラムの表示
 
