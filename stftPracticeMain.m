@@ -21,7 +21,6 @@ end
 winLen = 2048;
 shiftLen = winLen / 2;
 winCount = ceil((sampleCount - winLen) / shiftLen) + 1;
-sampleCountZFill = winLen + (winCount - 1) * shiftLen;
 
 winFnVec = 0.5 - 0.5 * cos(linspace(0, 2 * pi, winLen)');
 stftMat = zeros(winLen, winCount);
@@ -31,7 +30,7 @@ for i = 1:winCount
     endIdx = startIdx + winLen - 1;
 
     if endIdx > sampleCount
-        winSampleVec = cat(1, sampleVec(startIdx:sampleCount), zeros(sampleCountZFill - sampleCount, 1));
+        winSampleVec = cat(1, sampleVec(startIdx:sampleCount), zeros(endIdx - sampleCount, 1));
     else
         winSampleVec = sampleVec(startIdx:endIdx) ;
     end
