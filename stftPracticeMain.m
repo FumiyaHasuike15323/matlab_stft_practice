@@ -12,7 +12,9 @@ sampleVec = zeros(sampleCount, 1);
 
 freqBase = 440;
 amp = 0.4;
-for i = 1:2
+mpr = 2;
+
+for i = 1:mpr
     omega = 2 * pi * i * freqBase;
     sampleVec = sampleVec + amp * sin(omega * tVec);
 end
@@ -35,6 +37,15 @@ for i = 1:winCount
 end
 
 % パワースペクトログラムの表示
+axisXVec = linspace(0, second, winCount);
+axisYVec = linspace(0, samplingFreq / 2, winLen / 2 + 1)';
+
+axisXMat = repmat(axisXVec, winLen / 2 + 1, 1);
+axisYMat = repmat(axisYVec, 1, winCount);
+
+surface(axisXMat, axisYMat, 10 * log10(abs(stftMat(1:winLen / 2 + 1, :))), EdgeColor="none");
+xlim([0, 10])
+ylim([0, samplingFreq / 2])
 
 % 上記ができたら自分の声をaudacityで録音してwavファイルを用意し，パワースペクトログラムで見てみる
 
