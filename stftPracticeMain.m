@@ -28,5 +28,6 @@ stftMat = stftForward(sampleVec, winLen, shiftLen, "hann");
 showSpectrogram(stftMat, time, samplingFreq);
 
 % 上記ができたら自分の声をaudacityで録音してwavファイルを用意し，パワースペクトログラムで見てみる
+% stftPracticeFromFileMainに記述
 
 % Good luck!
